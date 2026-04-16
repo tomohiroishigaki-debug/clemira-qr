@@ -45,8 +45,14 @@
     const params = new URLSearchParams(window.location.search);
     const src = params.get("src") || "不明";
 
-    fetch(GAS_URL + "?src=" + encodeURIComponent(src) + "&redirect=no", { mode: "no-cors" });
+    // GASにアクセス記録
+    fetch(GAS_URL + "?src=" + encodeURIComponent(src), { mode: "no-cors" });
 
+    // Cookieにどのインフォマか保存（24時間有効）
+    const expires = new Date(Date.now() + 24 * 60 * 60 * 1000).toUTCString();
+    document.cookie = "clemira_qr_src=" + encodeURIComponent(src) + "; expires=" + expires + "; path=/; domain=.clemira.jp; SameSite=None; Secure";
+
+    // 0.8秒後にリダイレクト
     setTimeout(function() {
       window.location.replace(REDIRECT_URL);
     }, 800);
