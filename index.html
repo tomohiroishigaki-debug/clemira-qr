@@ -40,7 +40,7 @@
   </div>
   <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbzfbMez6e88bFrj6-jRJIhnqVWXQEAhOFLksVaL1kvCp20gfGUPw6JBiuTDTwk80nGx/exec";
-    const REDIRECT_URL = "https://clemira.jp/collections/frontpage";
+    const REDIRECT_BASE = "https://clemira.jp/collections/frontpage";
 
     const params = new URLSearchParams(window.location.search);
     const src = params.get("src") || "不明";
@@ -48,13 +48,9 @@
     // GASにアクセス記録
     fetch(GAS_URL + "?src=" + encodeURIComponent(src), { mode: "no-cors" });
 
-    // Cookieにどのインフォマか保存（24時間有効）
-    const expires = new Date(Date.now() + 24 * 60 * 60 * 1000).toUTCString();
-    document.cookie = "clemira_qr_src=" + encodeURIComponent(src) + "; expires=" + expires + "; path=/; domain=.clemira.jp; SameSite=None; Secure";
-
-    // 0.8秒後にリダイレクト
+    // URLパラメータにsrcを付けてリダイレクト
     setTimeout(function() {
-      window.location.replace(REDIRECT_URL);
+      window.location.replace(REDIRECT_BASE + "?qr_src=" + encodeURIComponent(src));
     }, 800);
   </script>
 </body>
