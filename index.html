@@ -44,11 +44,12 @@
 
     const params = new URLSearchParams(window.location.search);
     const src = params.get("src") || "不明";
+    const ua = encodeURIComponent(navigator.userAgent);
 
-    // GASにアクセス記録
-    fetch(GAS_URL + "?src=" + encodeURIComponent(src), { mode: "no-cors" });
+    // GASにアクセス記録（UA付き）
+    fetch(GAS_URL + "?src=" + encodeURIComponent(src) + "&ua=" + ua, { mode: "no-cors" });
 
-    // URLパラメータにsrcを付けてリダイレクト
+    // 0.8秒後にリダイレクト
     setTimeout(function() {
       window.location.replace(REDIRECT_BASE + "?qr_src=" + encodeURIComponent(src));
     }, 800);
